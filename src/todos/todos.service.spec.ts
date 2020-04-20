@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TodosService } from './todos.service';
+import { TodosService, Todos } from './todos.service';
 
 describe('TodosService', () => {
   let service: TodosService;
@@ -12,7 +12,12 @@ describe('TodosService', () => {
     service = module.get<TodosService>(TodosService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('should be defined', async () => {
+    const todo: Todos = {
+      body: 'test',
+      isDone: false,
+    };
+    service.createTodo(todo);
+    expect(service.getTodos()).toStrictEqual([todo]);
   });
 });
