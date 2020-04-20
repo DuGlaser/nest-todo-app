@@ -23,4 +23,8 @@ export class TodosService {
   createTodo(todo: Todos) {
     this.todos.push(todo);
   }
+
+  editTodo(todo: Todos, id: string) {
+    this.todos[id] = todo;
+  }
 }
