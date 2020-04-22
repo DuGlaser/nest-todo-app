@@ -1,15 +1,39 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TodosController } from './todos.controller';
 import { TodosService, Todos } from './todos.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Todo } from './todos.entity';
 
 describe('Todos Controller', () => {
   let todoController: TodosController;
   let todoService: TodosService;
+  const todos = [
+    {
+      id: 0,
+      body: 'test0',
+      isDone: false,
+    },
+    {
+      id: 1,
+      body: 'test2',
+      isDone: true,
+    },
+  ];
 
   beforeEach(async () => {
+    const MockRepository = {
+      provide: getRepositoryToken(Todo),
+      useValue: {
+        find: () => todos,
+        insert: entity => todos.push(entity),
+        update: (id, entity) => entity,
+        delete: () => todos.splice(0, 1),
+      },
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TodosController],
-      providers: [TodosService],
+      providers: [TodosService, MockRepository],
     }).compile();
 
     todoController = module.get<TodosController>(TodosController);
@@ -21,17 +45,12 @@ describe('Todos Controller', () => {
       body: 'test',
       isDone: false,
     };
-    jest.spyOn(todoService, 'createTodo').mockImplementation(() => [todo]);
-
-    expect(await todoController.createNewTodo(todo)).toBe(todo);
+    const res = await todoController.createNewTodo(todo);
+    expect(res.body).toBeDefined();
   });
 
   it('should return todo array', async () => {
-    const todo: Todos = {
-      body: 'test',
-      isDone: false,
-    };
-    jest.spyOn(todoService, 'getTodos').mockImplementation(() => [todo]);
-    expect(await todoController.getAll()).toStrictEqual([todo]);
+    const res = await todoController.getAll();
+    expect(res).toStrictEqual(todos);
   });
 });
