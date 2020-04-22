@@ -53,4 +53,11 @@ describe('Todos Controller', () => {
     const res = await todoController.getAll();
     expect(res).toStrictEqual(todos);
   });
+
+  // it('should to delete item', async () => {
+  //   await todoController.deleteTodo(0);
+  //   const res = await todoController.getAll();
+  //   console.log(res);
+  //   expect(res).toStrictEqual(todos);
+  // });
 });

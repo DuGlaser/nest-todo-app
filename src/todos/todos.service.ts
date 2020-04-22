@@ -29,4 +29,8 @@ export class TodosService {
   editTodo(todo: Todos, id: string) {
     this.todoRepository.update(id, todo);
   }
+
+  deleteTodo(id: number) {
+    this.todoRepository.delete(id);
+  }
 }
