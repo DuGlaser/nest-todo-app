@@ -13,7 +13,7 @@ export class TodosController {
   }
 
   @Get()
-  getAll(): Todos[] {
+  getAll() {
     return this.todoService.getTodos();
   }
 
