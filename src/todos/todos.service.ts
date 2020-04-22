@@ -1,4 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Todo } from './todos.entity';
+import { Repository } from 'typeorm';
 
 export interface Todos {
   body: string;
@@ -7,24 +10,23 @@ export interface Todos {
 
 @Injectable()
 export class TodosService {
-  private readonly todos: Todos[] = [];
+  constructor(
+    @InjectRepository(Todo)
+    private readonly todoRepository: Repository<Todo>,
+  ) {}
 
-  getTodos(): Todos[] {
-    return this.todos;
+  getTodos(): Promise<Todo[]> {
+    return this.todoRepository.find();
   }
 
-  // setTodos(todo: Todos): Promise<any> {
-  //   return new Promise(resolve => {
-  //     this.todos.push(todo);
-  //     resolve(todo);
-  //   });
-  // }
-
-  createTodo(todo: Todos) {
-    this.todos.push(todo);
+  createTodo(todo: Todos): Promise<any> {
+    return new Promise(resolve => {
+      this.todoRepository.save(todo);
+      resolve(todo);
+    });
   }
 
   editTodo(todo: Todos, id: string) {
-    this.todos[id] = todo;
+    this.todoRepository.update(id, todo);
   }
 }
