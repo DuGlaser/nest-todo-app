@@ -45,12 +45,12 @@ describe('Todos Controller', () => {
       body: 'test',
       isDone: false,
     };
-    const res = await todoController.createNewTodo(todo);
+    const res = await todoController.createTodo(todo);
     expect(res.body).toBeDefined();
   });
 
   it('should return todo array', async () => {
-    const res = await todoController.getAll();
+    const res = await todoController.findAll();
     expect(res).toStrictEqual(todos);
   });
 

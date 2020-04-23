@@ -7,18 +7,18 @@ export class TodosController {
   constructor(private readonly todoService: TodosService) {}
 
   @Post()
-  async createNewTodo(@Body() todo: TodoDto) {
+  async createTodo(@Body() todo: TodoDto) {
     this.todoService.createTodo(todo);
     return todo;
   }
 
   @Get()
-  getAll() {
-    return this.todoService.getTodos();
+  findAll() {
+    return this.todoService.findAll();
   }
 
   @Post('/edit/:id')
-  edit(@Body() todo: TodoDto, @Param() params) {
+  editTodo(@Body() todo: TodoDto, @Param() params) {
     return this.todoService.editTodo(todo, params.id);
   }
 

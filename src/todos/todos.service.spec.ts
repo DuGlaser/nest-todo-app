@@ -47,6 +47,6 @@ describe('TodosService', () => {
   // });
 
   it('should edit todo array', async () => {
-    expect(service.getTodos()).toStrictEqual(todos);
+    expect(service.findAll()).toStrictEqual(todos);
   });
 });
