@@ -1,6 +1,6 @@
 # front
 
-> This is a nest-todo-app&#39;s front.
+> This is the next-todo-app&#39;s front code.
 
 ## Build Setup
 

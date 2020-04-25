@@ -6,7 +6,7 @@ services:
     tty: true
     restart: always
     ports:
-      - '3000:3000'
+      - '5000:5000'
     volumes:
       - type: bind
         source: .

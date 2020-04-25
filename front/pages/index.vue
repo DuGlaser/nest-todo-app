@@ -6,14 +6,10 @@
         front
       </h1>
       <h2 class="subtitle">
-        This is a nest-todo-app&#39;s front.
+        This is the next-todo-app&#39;s front code.
       </h2>
       <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
+        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
           Documentation
         </a>
         <a
