@@ -1,24 +1,35 @@
-name: CI
+name: Ruby CI
 
-on: [pull_request, push]
+on: [push,pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run build --if-present
-    - run: npm test
+    services:
+      postgres:
+        image: postgres:12
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: pguser
+          POSTGRES_PASSWORD: password
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    container:
+      image: ruby:2.6.5
       env:
-        CI: true
+        RAILS_ENV: test
+        RAILS_DATABASE_HOST: postgres # this is needed
+        RAILS_DATABASE_USER: pguser
+        RAILS_DATABASE_PASSWORD: password
+    steps:
+    - uses: actions/checkout@v1
+    - name: Prepare bundler
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+    - name: Prepare database
+      run: |
+        bin/rails db:create
+        bin/rails db:schema:load
+    - name: Run test
+      run: bundle exce rspec
